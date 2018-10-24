@@ -53,3 +53,17 @@ lmBoot <- function(inputData, nBoot) {
 #   
 #   bootResults
 # }
+#
+#
+# Set x and y variables for the old function for profiling:
+#
+# x <- fitness$Age
+# y <- fitness$Oxygen
+#
+# Highlight the 2 lines below (adjust the function names first) then go to Profile -> Profile Selected Lines:
+#
+# lmBoot(fitness,1000)
+# lmBootOld(fitness,1000)
+#
+#
+#

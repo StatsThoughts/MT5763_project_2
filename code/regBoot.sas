@@ -29,15 +29,26 @@
 	RUN;
 	
 	/*Extracting the estiamtes*/
-	DATA coeffs;
-	SET regEsts;
-	KEEP &XVariable Intercept;
-	RUN; 
+/*	DATA coeffs;*/
+/*	SET regEsts;*/
+/*	KEEP &XVariable Intercept;*/
+/*	RUN; */
 
 	/*outputs*/
-	PROC UNIVARIATE DATA = coeffs;
+	ods select Histogram;
+	PROC UNIVARIATE DATA = regEsts NOPRINT;
 	VAR &XVariable Intercept;
-	OUTPUT out = CI95Per pctlpts=2.5, 97.5 pctlpre=CI;
+	OUTPUT out = CI95Per pctlpts=2.5, 97.5 pctlpre= &XVariable Intercept pctlname=Lower95 Upper95;
+	RUN;
+
+	/*Prints the 95% CIs*/
+	PROC PRINT DATA  = CI95Per;
+	VAR AgeLower95 AgeUpper95;
+	TITLE '95% CI for' &XVariable ' coefficent';
+
+	PROC PRINT DATA  = CI95Per;
+	VAR InterceptLower95 InterceptUpper95;
+	TITLE '95% CI for Intercept coefficent';
 	RUN;
 
 	

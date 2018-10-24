@@ -9,56 +9,56 @@
 /*Outputs:																								*/
 /*	- ResultHolder: A SAS dataset with NumberOfLoops rows and two columns, RandomIntercept & RandomSlope*/
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
 %macro regBoot(NumberOfLoops, DataSet, XVariable, YVariable);
+	/*Number of rows in my dataset*/
+ 	DATA _null_;
+  	SET &DataSet NOBS=size;
+  	CALL symput("NROW",size);
+ 	STOP;
+ 	RUN;
+	
+	/*Sampiling the data in one go*/
+	PROC SURVEYSELECT DATA = &DataSet  OUT = sampleHolder
+	METHOD = urs SAMPSIZE = &NROW REP = &NumberOfLoops NOPRINT OUTHITS;
+	RUN;
+	
+	/*Building the models*/
+	PROC REG DATA = sampleHolder outest = regEsts noprint;
+	MODEL &YVariable = &XVariable;
+	BY replicate;
+	RUN;
+	
+	/*Extracting the estiamtes*/
+	DATA coeffs;
+	SET regEsts;
+	KEEP &XVariable Intercept;
+	RUN; 
 
+	/*outputs*/
+	PROC UNIVARIATE DATA = coeffs;
+	VAR &XVariable Intercept;
+	OUTPUT out = CI95Per pctlpts=2.5, 97.5 pctlpre=CI;
+	RUN;
 
-/*Number of rows in my dataset*/
- 	data _null_;
-  	set &DataSet NOBS=size;
-  	call symput("NROW",size);
- 	stop;
- 	run;
-
-/*loop over the number of randomisations required*/
-%do i=1 %to &NumberOfLoops;
-
-
-/*Sample my data with replacement*/
-	proc surveyselect data=&DataSet out=bootData seed=-23434 method=urs noprint sampsize=&NROW;
-	run;
-
-/*Conduct a regression on this randomised dataset and get parameter estimates*/
-	proc reg data=bootData outest=ParameterEstimates  noprint;
-	Model &YVariable=&XVariable;
-	run;
-	quit;
-
-/*Extract just the columns for slope and intercept for storage*/
-	data Temp;
-	set ParameterEstimates;
-	keep Intercept &XVariable;
-	run;
-
-/*Create a new results dataset if the first iteration, append for following iterations*/
-	data ResultHolder;
-		%if &i=1 %then %do;
-			set Temp;
-		%end;
-		%else %do;
-			set ResultHolder Temp;
-		%end;
-	run;
-	%end;
-/*Rename the results something nice*/
-data ResultHolder;
-set ResultHolder;
-rename Intercept=RandomIntercept &XVariable=RandomSlope;
-run;
+	
 %mend;
+
+
+/* Start timer */
+%let startTime = %sysfunc(datetime());
+RUN;
 
 options nonotes;
 /*Run the macro*/
-%regBoot(NumberOfLoops=, DataSet=, XVariable=, YVariable=);
+%regBoot(NumberOfLoops=100, DataSet=MT5763.Fittness, XVariable=Age, YVariable=Oxygen);
 
 
+/* Stop timer */
+data _null_;
+  timeElapsed = datetime() - &startTime;
+  put timeElapsed time13.2;
+run;
+
+/*Base program takes 35.24s to run before changes*/
+/*Dataset is fittness, X = Age, Y = Oxygen, 100 iterations*/
+/*After the change, program takes 00.36s to run */

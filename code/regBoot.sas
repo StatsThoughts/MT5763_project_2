@@ -50,6 +50,18 @@
 	VAR InterceptLower95 InterceptUpper95;
 	TITLE '95% CI for Intercept coefficent';
 	RUN;
+	
+	/*Alternate Version of ODS graphs*/
+	ODS RTF;
+	proc gchart data = coeffs; 
+  	vbar &XVariable;
+ 	run;
+
+	proc gchart data = coeffs;
+	vbar &YVariable;
+	run;
+	ODS RTF close;
+
 
 	
 %mend;

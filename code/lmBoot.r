@@ -2,7 +2,6 @@ library(parallel)
 # This line just in case anyone forgets to import data 
 fitness <- read_csv("data/fitness.csv")
 
-
 #For higher efficiency split calculations between cores
 nCores <- detectCores()
 myClust <- makeCluster(nCores-1, type = "PSOCK") 

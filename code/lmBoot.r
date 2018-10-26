@@ -101,5 +101,31 @@ test <- data.frame(x = x, y=y)
 lmBoot(test,1000)
 lmBootOld(test,1000)
 
+# Microbenchmark tests------------------------------------------------------
+# Packages for microbenchmark and boot.
+install.packages("microbenchmark")
+install.packages("boot")
+library(microbenchmark)
+library(boot)
 
+# This defines the statistic function parameter required for the boot function.
+BootStatistic <- function(dataframe, indices, responseCol)
+{
+  dataframe <- dataframe[indices,]
+  colnames(dataframe)[responseCol]= "y"
+  BootStatLM <- lm(y ~ . , data = dataframe)
+  coef(BootStatLM)
+}
+
+# Just confirming that the bootstraps return similar results.
+results1 <- boot(data = fitness, statistic = BootStatistic, R = 1000, responseCol = 1)
+results2 <- lmBoot(fitness, 1000, "Age")
+results1$t0
+colMeans(results2)
+
+# Microbenchmark comparing the improved bootstrap and the boot package boostrap.
+microbenchmark(
+  boot(fitness, BootStatistic, R = 100, responseCol = 1),
+  lmBoot(fitness, 100, "Age")
+)  
 

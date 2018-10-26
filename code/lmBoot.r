@@ -26,7 +26,6 @@ lmBoot <- function(inputData, nBoot, response) {
   inputLM <- lm(inputData)
   bootResults[1,] <- coef(inputLM)
   
-  clusterExport(myClust, "inputData")
   bootResults[2:nBoot,] <- t(parSapply(myClust, 2:nBoot, function(i) {
     #resample data with replacement and fit model to this resample
     resample <- inputData[sample(1:nrow(inputData), nrow(inputData), replace = TRUE),]

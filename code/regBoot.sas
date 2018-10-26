@@ -28,12 +28,6 @@
 	BY replicate;
 	RUN;
 	
-	/*Extracting the estiamtes*/
-/*	DATA coeffs;*/
-/*	SET regEsts;*/
-/*	KEEP &XVariable Intercept;*/
-/*	RUN; */
-
 	/*outputs*/
 	ods select Histogram;
 	PROC UNIVARIATE DATA = regEsts NOPRINT;
@@ -41,10 +35,12 @@
 	OUTPUT out = CI95Per pctlpts=2.5, 97.5 pctlpre= &XVariable Intercept pctlname=Lower95 Upper95;
 	RUN;
 
+
+	ODS RTF;
 	/*Prints the 95% CIs*/
 	PROC PRINT DATA  = CI95Per;
 	VAR AgeLower95 AgeUpper95;
-	TITLE '95% CI for' &XVariable ' coefficent';
+	TITLE "95% CI for &XVariable coefficent";
 
 	PROC PRINT DATA  = CI95Per;
 	VAR InterceptLower95 InterceptUpper95;
@@ -52,15 +48,17 @@
 	RUN;
 	
 	/*Alternate Version of ODS graphs*/
-	ODS RTF;
-	proc gchart data = coeffs; 
-  	vbar &XVariable;
- 	run;
+	
+	PROC gchart DATA = regEsts; 
+  	VBAR &XVariable;
+	TITLE "Histogram for &XVariable coefficent";
+ 	RUN;
 
-	proc gchart data = coeffs;
-	vbar &YVariable;
-	run;
-	ODS RTF close;
+	PROC gchart DATA = regEsts;
+	VBAR intercept;
+	TITLE 'Histogram for Intercept coefficent';
+	RUN;
+	ODS RTF CLOSE;
 
 
 	
@@ -85,3 +83,4 @@ run;
 /*Base program takes 35.24s to run before changes*/
 /*Dataset is fittness, X = Age, Y = Oxygen, 100 iterations*/
 /*After the change, program takes 00.36s to run */
+/*Note with addition of graphics, takes 02.86s*/

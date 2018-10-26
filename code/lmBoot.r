@@ -1,4 +1,8 @@
 library(parallel)
+
+
+# Global inputs for testing -----------------------------------------------
+
 # This line just in case anyone forgets to import data 
 fitness <- read.csv("data/fitness.csv")
 
@@ -7,14 +11,19 @@ nCores <- detectCores()
 myClust <- makeCluster(nCores-1, type = "PSOCK") 
 
 
-lmBoot <- function(inputData, nBoot, response) {
+
+# Modified lmBoot ---------------------------------------------------------
+
+lmBoot <- function(inputData, nBoot, response = NA) {
   #Inputs: 
   #inputData - The data that you wish to boostrap on
   #nBoot - The number of bootstraps to use
-  #response - The response variable that you are interested in
+  #response - The response variable that you are interested in. No input means first column
   #NOTE: Will fit a model of response against all other columns in the 
   #      inputted data frame, if you wish to fit more specific models
   #      then input a subsetted data frame
+  
+  if(is.na(response)){response<-colnames(inputData)[1]}
   
   #reorder data with response variable first
   #Do this as lm command will take first column as no response with no other
@@ -37,45 +46,51 @@ lmBoot <- function(inputData, nBoot, response) {
   return(bootResults)
 }
 
-# Old Code
 
-# lmBoot <- function(inputData, nBoot){
-#   
+# Old Code ----------------------------------------------------------------
+
+
+# lmBootOld <- function(inputData, nBoot){
+# 
 #   for(i in 1:nBoot){
-#     
+# 
 #     # resample our data with replacement
 #     bootData <- inputData[sample(1:nrow(inputData), nrow(inputData), replace = T),]
-#     
+# 
 #     # fit the model under this alternative reality
 #     bootLM <- lm(y ~ x, data = bootData)
-#     
+# 
 #     # store the coefs
 #     if(i == 1){
-#       
+# 
 #       bootResults <- matrix(coef(bootLM), ncol = 2)
-#       
+# 
 #     } else {
-#       
+# 
 #       bootResults<- rbind(bootResults, matrix(coef(bootLM), ncol = 2))
-#       
+# 
 #     }
-#     
-#     
+# 
+# 
 #   } # end of i loop
-#   
+# 
 #   bootResults
 # }
-#
-#
-# Set x and y variables for the old function for profiling:
+
+
+
+
+# Profiling/Comparisions --------------------------------------------------
+# # Set x and y variables for the old function for profiling:
 #
 # x <- fitness$Age
 # y <- fitness$Oxygen
+# test <- data.frame(x = x, y=y)
 #
-# Highlight the 2 lines below (adjust the function names first) then go to Profile -> Profile Selected Lines:
+# # Highlight the 2 lines below (adjust the function names first) then go to Profile -> Profile Selected Lines:
 #
-# lmBoot(fitness,1000)
-# lmBootOld(fitness,1000)
+# lmBoot(test,1000)
+# lmBootOld(test,1000)
 #
 #
 #

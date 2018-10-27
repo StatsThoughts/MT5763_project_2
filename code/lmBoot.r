@@ -120,8 +120,16 @@ BootStatistic <- function(dataframe, indices, responseCol)
 # Just confirming that the bootstraps return similar results.
 results1 <- boot(data = fitness, statistic = BootStatistic, R = 1000, responseCol = 1)
 results2 <- lmBoot(fitness, 1000, "Age")
-results1$t0
-colMeans(results2)
+r1 <- results1$t0
+r2 <- colMeans(results2)
+
+sapply(names(r1), function(x){
+if(abs((r1[x]-r2[x])/r1[x]) < 0.1){
+  return("TRUE")
+}else{
+  return("FALSE")
+}
+})
 
 # Microbenchmark comparing the improved bootstrap and the boot package boostrap.
 microbenchmark(

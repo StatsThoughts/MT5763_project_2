@@ -1,12 +1,4 @@
 
-
-# Global inputs for testing -----------------------------------------------
-
-#For higher efficiency split calculations between cores
- 
-
-
-
 # Modified lmBoot ---------------------------------------------------------
 
 lmBoot <- function(inputData, nBoot, response = NA, clusterType = "PSOCK") {
@@ -54,7 +46,6 @@ lmBoot <- function(inputData, nBoot, response = NA, clusterType = "PSOCK") {
 
 # Old Code ----------------------------------------------------------------
 
-
 lmBootOld <- function(inputData, nBoot){
 
   for(i in 1:nBoot){
@@ -83,14 +74,11 @@ lmBootOld <- function(inputData, nBoot){
 }
 
 
-
-
 # Profiling/Comparisions --------------------------------------------------
 # Set x and y variables for the old function for profiling:
 
 # This line just in case anyone forgets to import data
 fitness <- read.csv("data/fitness.csv")
-
 
 x <- fitness$Age
 y <- fitness$Oxygen
@@ -103,8 +91,8 @@ lmBootOld(test,1000)
 
 # Microbenchmark tests------------------------------------------------------
 # Packages for microbenchmark and boot.
-install.packages("microbenchmark")
-install.packages("boot")
+##install.packages("microbenchmark")
+##install.packages("boot")
 library(microbenchmark)
 library(boot)
 

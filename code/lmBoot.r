@@ -122,6 +122,7 @@ if(abs((r1[x]-r2[x])/r1[x]) < 0.1){
 # Microbenchmark comparing the improved bootstrap and the boot package boostrap.
 microbenchmark(
   boot(fitness, BootStatistic, R = 100, responseCol = 1),
-  lmBoot(fitness, 100, "Age")
+  lmBoot(fitness, 100, "Age"),
+  times = 100
 )  
 

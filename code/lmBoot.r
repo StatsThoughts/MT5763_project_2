@@ -1,7 +1,11 @@
+# Load Clusters -----------------------------------------------------------
+library(parallel)
+nCores <- detectCores()
+myClust <- makeCluster(nCores-1, type = "PSOCK")
 
 # Modified lmBoot ---------------------------------------------------------
 
-lmBoot <- function(inputData, nBoot, response = NA, clusterType = "PSOCK") {
+lmBoot <- function(inputData, nBoot, response = NA, myClust) {
   #Inputs: 
   #inputData - The data that you wish to boostrap on
   #nBoot - The number of bootstraps to use
@@ -12,9 +16,7 @@ lmBoot <- function(inputData, nBoot, response = NA, clusterType = "PSOCK") {
   #      then input a subsetted data frame
 
   if(require(parallel) == FALSE){stop("Please install parallel package")}
-  nCores <- detectCores()
-  myClust <- makeCluster(nCores-1, type = clusterType)
-  
+
   # Defaults to first column if no response is given 
   if(is.na(response)){response<-colnames(inputData)[1]}
   
@@ -36,9 +38,6 @@ lmBoot <- function(inputData, nBoot, response = NA, clusterType = "PSOCK") {
   
   #Set column names of matrix to the estimated parameters
   colnames(bootResults) <- names(coef(inputLM))
-  
-  # Stop Clusters when not needed
-  stopCluster(myClust)
   
   return(bootResults)
 }
@@ -73,7 +72,6 @@ lmBootOld <- function(inputData, nBoot){
   bootResults
 }
 
-
 # Profiling/Comparisions --------------------------------------------------
 # Set x and y variables for the old function for profiling:
 
@@ -86,19 +84,19 @@ test <- data.frame(x = x, y=y)
 
 # Highlight the 2 lines below (adjust the function names first) then go to Profile -> Profile Selected Lines:
 
-lmBoot(test,1000)
+lmBoot(test,1000,myClust = myClust)
 lmBootOld(test,1000)
+
+## system.time(lmBoot(test,1000,"Oxygen", myClust))
+## system.time(lmBootOld(test,1000))
 
 # Microbenchmark tests------------------------------------------------------
 # Packages for microbenchmark and boot.
-##install.packages("microbenchmark")
-##install.packages("boot")
 library(microbenchmark)
 library(boot)
 
 # This defines the statistic function parameter required for the boot function.
-BootStatistic <- function(dataframe, indices, responseCol)
-{
+BootStatistic <- function(dataframe, indices, responseCol){
   dataframe <- dataframe[indices,]
   colnames(dataframe)[responseCol]= "y"
   BootStatLM <- lm(y ~ . , data = dataframe)
@@ -106,23 +104,24 @@ BootStatistic <- function(dataframe, indices, responseCol)
 }
 
 # Just confirming that the bootstraps return similar results.
-results1 <- boot(data = fitness, statistic = BootStatistic, R = 1000, responseCol = 1)
-results2 <- lmBoot(fitness, 1000, "Age")
+results1 <- boot(data = fitness, statistic = BootStatistic, R = 1000, responseCol = 3)
+results2 <- lmBoot(fitness,1000,"Oxygen", myClust)
 r1 <- results1$t0
 r2 <- colMeans(results2)
 
-sapply(names(r1), function(x){
-if(abs((r1[x]-r2[x])/r1[x]) < 0.1){
-  return("TRUE")
-}else{
-  return("FALSE")
-}
-})
+# Showing differences between boot results 
+abs((r2-r1)/r1)<0.2 #T/F if its within relative percentage 
+r2
+r1
+abs(r1-r2)/abs(r1) #Relative percentages for results 
 
 # Microbenchmark comparing the improved bootstrap and the boot package boostrap.
 microbenchmark(
   boot(fitness, BootStatistic, R = 100, responseCol = 1),
-  lmBoot(fitness, 100, "Age"),
+  lmBoot(fitness,1000,"Age", myClust),
   times = 100
 )  
 
+
+# Stop Clusters
+stopCluster(myClust)

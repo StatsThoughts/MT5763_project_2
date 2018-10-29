@@ -16,6 +16,11 @@ lmBoot <- function(inputData, nBoot, response = NA, myClust) {
   #      then input a subsetted data frame
 
   if(require(parallel) == FALSE){stop("Please install parallel package")}
+  
+  if(missing(myClust)) {
+    nCores <- detectCores()
+    myClust <- makeCluster(nCores-1, type = "PSOCK")
+  }
 
   # Defaults to first column if no response is given 
   if(is.na(response)){response<-colnames(inputData)[1]}

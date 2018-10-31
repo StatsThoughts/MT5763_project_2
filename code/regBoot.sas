@@ -21,6 +21,9 @@
   	CALL symput("NROW",size);
  	STOP;
  	RUN;
+
+	/*Gets rid of one sample to add in the original linear regression to the bootstrap */
+	%LET NumberOfLoops = %eval(&NumberOfLoops - 1);
 	
 	/*Sampiling the data in one go*/
 	PROC SURVEYSELECT DATA = &DataSet  OUT = sampleHolder

@@ -8,6 +8,7 @@ ggplot(data = times, aes(x=State, y = Time, fill = State)) + geom_bar(stat="iden
 
 
 # Plotting code for R timings -------------------------------------------
+
 source("code/lmBoot.r")
 
 t1 <- system.time(lmBoot(fitness, 1000, "Oxygen", myClust))

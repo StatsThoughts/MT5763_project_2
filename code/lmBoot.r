@@ -121,11 +121,16 @@ r1
 abs(r1-r2)/abs(r1) #Relative percentages for results 
 
 # Microbenchmark comparing the improved bootstrap and the boot package boostrap.
-microbenchmark(
-  boot(fitness, BootStatistic, R = 100, responseCol = 1),
-  lmBoot(fitness,1000,"Age", myClust),
+Benchmark1<- microbenchmark(
+  boot(fitness, BootStatistic, R = 1000, responseCol = 3, parallel = "multicore", ncpus= nCores-1),
+  lmBoot(fitness,1000,"Oxygen", myClust),
   times = 100
 )  
+Benchmark1
+
+#Plots for the microbenchmark. For the autoplot, you will have to click on the zoom button to view it, as the expression is quite long.
+boxplot(Benchmark1, xlab = "Function", log = FALSE, ylab = "time (milliseconds)")
+autoplot(benchmark2, log = FALSE)
 
 
 # Stop Clusters

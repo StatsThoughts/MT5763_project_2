@@ -11,4 +11,4 @@ ggplot(data = times, aes(x=State, y = Time, fill = State)) + geom_bar(stat="iden
 
 timesR <- data.frame(State = c("Original version", "Optimized Version"), Time = c(2.00,1.24))
 timesR$State <- factor(timesR$State, levels = timesR$State)
-ggplot(data = timesR, aes(x=State, y = Time, fill = State)) + geom_bar(stat="identity") + guides(fill=FALSE)
+ggplot(data = timesR, aes(x = State, y = Time, fill = State)) + geom_bar(stat="identity") + guides(fill = FALSE)

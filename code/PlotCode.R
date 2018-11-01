@@ -8,8 +8,12 @@ ggplot(data = times, aes(x=State, y = Time, fill = State)) + geom_bar(stat="iden
 
 
 # Plotting code for R timings -------------------------------------------
+source("code/lmBoot.r")
 
-timesR <- data.frame(State = c("Original version", "Optimized Version"), Time = c(2.00,1.24))
+t1 <- system.time(lmBoot(fitness, 1000, "Oxygen", myClust))
+t2 <- system.time(lmBootOld(fitness, 1000))
+# t1 = 0.38s, t2 = 0.64s
+timesR <- data.frame(State = c("Original version", "Optimized Version"), Time = c(t2[[3]],t1[[3]]))
 timesR$State <- factor(timesR$State, levels = timesR$State)
 ggplot(data = timesR, aes(x = State, y = Time, fill = State)) + geom_bar(stat="identity") + guides(fill = FALSE)
 

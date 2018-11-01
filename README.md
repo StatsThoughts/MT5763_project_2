@@ -3,6 +3,20 @@
 Welcome to the repository for the MT5763 Group Project for team Sharknado 5: Global Swarming
 
 ## Documentation for R Script
+The script for the code can be found liked [here](https://github.com/StatsThoughts/MT5763_project_2/blob/master/code/lmBoot.R).
+
+### lmBoot
+The purpose of this function is to generate bootstraps for a linear regresion model for any number of covariates. The output of the function is a single matrix which contains covariate estimates for each bootstrapped resample of the data.
+
+The function takes the following arguments:
+* **inputData** - A dataframe containing observations for each of the covariates and the response
+* **nBoot** - An integer detailing the number of bootstrapped resamples to generate
+* **response** - String matching a column name from inputData dictating which variable should be treated as the response
+* **myclust** - Optional argument, cluster defined using library(parallel) will run faster using multiple multiple cores from the specified cluster
+
+The function performs a bootstrap by sampling from the data with replacement, finding the parameter estimates for the resample and then storing these in a matrix that is outputted. 
+
+To use the function call lmBoot() with inputs as defined above. 
 
 ## Documentation for SAS Script
 The script for the code can be found linked [here](https://github.com/StatsThoughts/MT5763_project_2/blob/master/code/regBoot.sas). 

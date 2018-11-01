@@ -22,7 +22,7 @@ To use the file, call the macro %regBoot() with parameters defined following the
 
 ## Speed increases in Code Changes
 
-Below is a plot showing the changes in speed for our code after each major code change for SAS 
+Below is a plot showing the changes in speed for our code after each major code change for SAS. For the SAS code, the code went through two major iterations. The "Original Version" is the orignal SAS bootstrapping code provided for the project. The  "Optimized Version" is the version after changing and enhancing the orignal SAS bootstrapping code. The "Added RTF Outputs" change added outputs the RTF outputs in the format specified for the project, and added an enhancement to ensure that at least one of the bootstrap resamples included the orginal linear model. 
 
 ![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/SAS%20Time%20Plots.png)
 

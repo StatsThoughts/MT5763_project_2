@@ -120,11 +120,11 @@ Benchmark1<- microbenchmark(
 
 nCores <- detectCores()
 myClust <- makeCluster(nCores-1, type = "PSOCK")
-
+lmbootExCluster <- lmBoot
 # Benchmark Code
 set.seed(1234)
 Benchmark3<- microbenchmark(
-  lmBootInCluster(FitnessTwoVars,1000,"Oxygen"),
+  lmBootExCluster(FitnessTwoVars,1000,"Oxygen"),
   times = 100
 )  
 

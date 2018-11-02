@@ -49,7 +49,7 @@ load(file = "RPlotFunctions.RData")
 
 # Function code
 
-lmBootInCluster <- function(inputData, nBoot, response = NA, clusterType = "PSOCK") {
+lmBootInCluster <- function(inputData, nBoot, response = NA) {
   #Inputs: 
   #inputData - The data that you wish to boostrap on
   #nBoot - The number of bootstraps to use
@@ -61,7 +61,7 @@ lmBootInCluster <- function(inputData, nBoot, response = NA, clusterType = "PSOC
   
   if(require(parallel) == FALSE){stop("Please install parallel package")}
   nCores <- detectCores()
-  myClust <- makeCluster(nCores-1, type = clusterType)
+  myClust <- makeCluster(nCores-1, type = "PSOCK")
   
   # Defaults to first column if no response is given 
   if(is.na(response)){response<-colnames(inputData)[1]}
@@ -92,7 +92,27 @@ lmBootInCluster <- function(inputData, nBoot, response = NA, clusterType = "PSOC
 }
 
 
-# Benchmark Code
+
+
+
+
+
+
+#----------------------------------------------------------------- BENCHMARKS BOX PLOTS-----------------------------------------------------------------
+
+
+
+# Benchmark Code for original function.
+x <- FitnessTwoVars$Age
+y <- FitnessTwoVars$Oxygen
+
+set.seed(1234)
+Benchmark1<- microbenchmark(
+  lmBootOld(FitnessTwoVars,1000),
+  times = 100
+)  
+
+# Benchmark Code for first iteration (internally defined clusters)
 set.seed(1234)
 Benchmark2<- microbenchmark(
   lmBootInCluster(FitnessTwoVars,1000,"Oxygen"),
@@ -100,38 +120,19 @@ Benchmark2<- microbenchmark(
 )  
 
 
-
-
-
-
-
-#----------------------------- BENCHMARK FOR THE ORIGINAL, FINAL VERSION  AND BOOT FUNCTIONS----------------------------------
-
-x <- FitnessTwoVars$Age
-y <- FitnessTwoVars$Oxygen
-
-# Benchmark Code
-set.seed(1234)
-Benchmark1<- microbenchmark(
-  lmBootInCluster(FitnessTwoVars,1000),
-  times = 100
-)  
-
-
+# Benchmark Code for second/final iteration (externally defined clusters).
 nCores <- detectCores()
 myClust <- makeCluster(nCores-1, type = "PSOCK")
-lmBootExCluster <- lmBoot
-# Benchmark Code
 set.seed(1234)
 Benchmark3<- microbenchmark(
-  lmBootExCluster(FitnessTwoVars,1000,"Oxygen"),
+  lmBoot(FitnessTwoVars,1000, response = "Oxygen", myClust = myClust),
   times = 100
 )  
 
 stopCluster(myClust)
 
 
-# Benchmark code. 
+# Benchmark code for boot package function. 
 set.seed(1234)
 Benchmark4<- microbenchmark(
   boot(FitnessTwoVars, BootStatistic, R = 1000, responseCol = 2, parallel = "multicore", ncpus= nCores-1),
@@ -145,5 +146,4 @@ Benchmark4<- microbenchmark(
 
 
 BenchmarkPlot <- rbind(Benchmark1, Benchmark2, Benchmark3, Benchmark4)
-boxplot(BenchmarkPlot, unit="ms", log = F, ylab = "Time (milliseconds)", xlab = "Function", names = c("lmBootOriginal", "lmBootInCluster", "lmBootExCluster", "boot"))
-
+boxplot(BenchmarkPlot, unit="ms", log = F, ylab = "Time (milliseconds)", xlab = "Function", names = c("Original", "First iteration", "Final iteration", "boot"))

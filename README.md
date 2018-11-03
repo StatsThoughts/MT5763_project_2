@@ -18,7 +18,7 @@ The function performs a bootstrap by first sampling from the data with replaceme
 
 To use the function call lmBoot() with inputs as defined above. 
 
-##Speed increase in Code Changes
+## Speed increase in Code Changes
 
 ## Documentation for SAS Script
 The script for the code can be found linked [here](https://github.com/StatsThoughts/MT5763_project_2/blob/master/code/regBoot.sas). 

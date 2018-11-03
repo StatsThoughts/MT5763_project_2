@@ -50,7 +50,8 @@ In this part, we focus on R code.
 We are using the data set provided by R base called "trees" in both R and SAS example analysis. The data is about the girth, height and volume for Black Cherry Trees, so there are three columns in the data are "Girth", "Height" and "Volume". 
 
 \begin{center}
-![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/trees.png)
+\includegraphics[width = 4cm ]
+![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/trees.png) 
 \end{center}  
   
 ### Analyse 

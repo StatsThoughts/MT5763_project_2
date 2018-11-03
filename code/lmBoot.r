@@ -2,6 +2,7 @@
 library(parallel)
 nCores <- detectCores()
 myClust <- makeCluster(nCores-1, type = "PSOCK")
+library(ggplot2)
 
 # Modified lmBoot ---------------------------------------------------------
 
@@ -14,7 +15,7 @@ lmBoot <- function(inputData, nBoot, response = NA, myClust) {
   #NOTE: Will fit a model of response against all other columns in the 
   #      inputted data frame, if you wish to fit more specific models
   #      then input a subsetted data frame
-
+  
   if(require(parallel) == FALSE){stop("Please install parallel package")}
   
   if(missing(myClust)) {
@@ -89,11 +90,11 @@ test <- data.frame(x = x, y=y)
 
 # Highlight the 2 lines below (adjust the function names first) then go to Profile -> Profile Selected Lines:
 
-lmBoot(test,1000,myClust = myClust)
+lmBoot(test,1000, response = "y",myClust = myClust)
 lmBootOld(test,1000)
 
-## system.time(lmBoot(test,1000,"Oxygen", myClust))
-## system.time(lmBootOld(test,1000))
+## system.time(lmBoot(test,10000,"Oxygen", myClust))
+## system.time(lmBootOld(test,10000))
 
 # Microbenchmark tests------------------------------------------------------
 # Packages for microbenchmark and boot.
@@ -120,14 +121,17 @@ r2
 r1
 abs(r1-r2)/abs(r1) #Relative percentages for results 
 
+
 # Microbenchmark comparing the improved bootstrap and the boot package boostrap.
-microbenchmark(
+benchmark <- microbenchmark(
   boot(fitness, BootStatistic, R = 1000, responseCol = 3, parallel = "multicore", ncpus= nCores-1),
   lmBoot(fitness,1000,"Oxygen", myClust),
-  times = 100
+  times = 50
 )  
 
+levels(benchmark$expr) <- c("boot", "lmBoot")
 
+autoplot(benchmark) + ggtitle("Microbenchmark results")
 
 
 # Stop Clusters

@@ -14,9 +14,11 @@ The function takes the following arguments:
 * **response** - String matching a column name from inputData dictating which variable should be treated as the response
 * **myclust** - Optional argument, cluster defined using library(parallel) will run faster using multiple multiple cores from the specified cluster
 
-The function performs a bootstrap by sampling from the data with replacement, finding the parameter estimates for the resample and then storing these in a matrix that is outputted. 
+The function performs a bootstrap by first sampling from the data with replacement, finding the parameter estimates for the resampled data and then storing these in a matrix, this is repeated 'nBoot' times and then the matrix is outputted. 
 
 To use the function call lmBoot() with inputs as defined above. 
+
+##Speed increase in Code Changes
 
 ## Documentation for SAS Script
 The script for the code can be found linked [here](https://github.com/StatsThoughts/MT5763_project_2/blob/master/code/regBoot.sas). 
@@ -36,7 +38,7 @@ To use the file, call the macro %regBoot() with parameters defined following the
 
 ## Speed increases in Code Changes
 
-Below is a plot showing the changes in speed for our code after each major code change for SAS. For the SAS code, the code went through two major iterations. The "Original Version" is the orignal SAS bootstrapping code provided for the project. The  "Optimized Version" is the version after changing and enhancing the orignal SAS bootstrapping code. The "Added RTF Outputs" change added outputs the RTF outputs in the format specified for the project, and added an enhancement to ensure that at least one of the bootstrap resamples included the orginal linear model. 
+Below is a plot showing the changes in speed for our code after each major code change for SAS. For the SAS code, the code went through two major iterations. The "Original Version" is the orignal SAS bootstrapping code provided for the project. The  "Optimized Version" is the version after changing and enhancing the orignal SAS bootstrapping code. The "Added RTF Outputs" change added the RTF outputs in the format specified for the project, and added an enhancement to ensure that at least one of the bootstrap resamples included the orginal linear model. 
 
 ![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/SAS%20Time%20Plots.png)
 
@@ -45,7 +47,7 @@ The purpose of the part is using an examaple data set to run our bootstrap funct
 In this part, we focus on R code. 
 
 ### Example data set 
-We are using the same data set provided by R base called "trees" in both R and SAS example analysis. The data is about the girth, geight and volume for Black Cherry Trees, so there are three columns in the data are "Girth", "Height" and "Volume". 
+We are using the same data set provided by R base called "trees" in both R and SAS example analysis. The data is about the girth, height and volume for Black Cherry Trees, so there are three columns in the data are "Girth", "Height" and "Volume". 
   
 ### Analyse 
 

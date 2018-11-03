@@ -121,17 +121,21 @@ r1
 abs(r1-r2)/abs(r1) #Relative percentages for results 
 
 # Microbenchmark comparing the improved bootstrap and the boot package boostrap.
-Benchmark1<- microbenchmark(
+microbenchmark(
   boot(fitness, BootStatistic, R = 1000, responseCol = 3, parallel = "multicore", ncpus= nCores-1),
   lmBoot(fitness,1000,"Oxygen", myClust),
   times = 100
 )  
-Benchmark1
 
-#Plots for the microbenchmark. For the autoplot, you will have to click on the zoom button to view it, as the expression is quite long.
-boxplot(Benchmark1, xlab = "Function", log = FALSE, ylab = "time (milliseconds)")
-autoplot(benchmark2, log = FALSE)
+
 
 
 # Stop Clusters
 stopCluster(myClust)
+
+
+# Creates a dataframe with only two variables for bootstrap comparison. The original bootstrap function only fits
+# linear models with one covariate, so to compare the same linear model we need to use only one covariate as well.
+# Second line below saves the necessary objects for the plot code file.
+FitnessTwoVars <- fitness[,c("Age","Oxygen")]
+save(lmBootOld, lmBoot, FitnessTwoVars,BootStatistic, file = "RPlotFunctions.RData")

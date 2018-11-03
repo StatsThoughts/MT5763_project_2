@@ -1,5 +1,7 @@
 
 library(ggplot2)
+
+
 # Plotting code for SAS timings -------------------------------------------
 
 times <- data.frame(State = c("Original version", "Optimized Version", "Added RTF Outputs"), Time = c(35.24,0.36, 6.41))
@@ -9,7 +11,12 @@ ggplot(data = times, aes(x=State, y = Time, fill = State)) + geom_bar(stat="iden
 
 # Plotting code for R timings -------------------------------------------
 
-timesR <- data.frame(State = c("Original version", "Optimized Version"), Time = c(2.00,1.24))
+source("code/lmBoot.r")
+
+t1 <- system.time(lmBoot(fitness, 1000, "Oxygen", myClust))
+t2 <- system.time(lmBootOld(fitness, 1000))
+# t1 = 0.38s, t2 = 0.64s
+timesR <- data.frame(State = c("Original version", "Optimized Version"), Time = c(t2[[3]],t1[[3]]))
 timesR$State <- factor(timesR$State, levels = timesR$State)
 ggplot(data = timesR, aes(x = State, y = Time, fill = State)) + geom_bar(stat="identity") + guides(fill = FALSE)
 
@@ -26,23 +33,23 @@ ggplot(data = timesR, aes(x = State, y = Time, fill = State)) + geom_bar(stat="i
 
 
 
-#--------------------------------------- BOXPLOT CODE BELOW-------------------------------------------------------------------------------
+#--------------------------------------- BOXPLOT CODE BELOW-------------------------------------------------------------------------
 
 
 # Microbenchmark tests------------------------------------------------------
-# Packages for microbenchmark and boot.
+# Packages for the functions we are comparing.
 library(microbenchmark)
-library(boot)
 library(parallel)
+library(boot)
+load(file = "RPlotFunctions.RData")
 
 
-#--------------------------------------- BENCHMARK FOR THE VERSION WITH INTERNALLY DEFINED CLUSTER-------------------------------------------------------------
-
+#-------------------------CODE FOR THE PREVIOUS FUNCTION ITERATION WITH INTERNALLY DEFINED CLUSTER----------------------------------
 
 
 # Function code
 
-lmBootInCluster <- function(inputData, nBoot, response = NA, clusterType = "PSOCK") {
+lmBootInCluster <- function(inputData, nBoot, response = NA) {
   #Inputs: 
   #inputData - The data that you wish to boostrap on
   #nBoot - The number of bootstraps to use
@@ -54,7 +61,7 @@ lmBootInCluster <- function(inputData, nBoot, response = NA, clusterType = "PSOC
   
   if(require(parallel) == FALSE){stop("Please install parallel package")}
   nCores <- detectCores()
-  myClust <- makeCluster(nCores-1, type = clusterType)
+  myClust <- makeCluster(nCores-1, type = "PSOCK")
   
   # Defaults to first column if no response is given 
   if(is.na(response)){response<-colnames(inputData)[1]}
@@ -85,108 +92,58 @@ lmBootInCluster <- function(inputData, nBoot, response = NA, clusterType = "PSOC
 }
 
 
-# Benchmark Code
+
+
+
+
+
+
+#----------------------------------------------------------------- BENCHMARKS BOX PLOTS-----------------------------------------------------------------
+
+
+
+# Benchmark Code for original function.
+x <- FitnessTwoVars$Age
+y <- FitnessTwoVars$Oxygen
+
 set.seed(1234)
 Benchmark1<- microbenchmark(
-  lmBootInCluster(fitness,1000,"Oxygen"),
+  lmBootOld(FitnessTwoVars,1000),
   times = 100
 )  
-Benchmark1
 
-
-
-#---------------------------------------BENCHMARK FOR FUNCTION ITERATION WITH EXTERNALLY DEFINED CLUSTER-------------------------------------------------------------
-
-
-# Defining the cluster
-nCores <- detectCores()
-myClust <- makeCluster(nCores-1, type = "PSOCK")
-
-#Function code
-
-lmBootExCluster <- function(inputData, nBoot, response = NA, myClust) {
-  #Inputs: 
-  #inputData - The data that you wish to boostrap on
-  #nBoot - The number of bootstraps to use
-  #response - The response variable that you are interested in. No input means first column
-  #clusterType - Passes to type of cluster n makeCluster 
-  #NOTE: Will fit a model of response against all other columns in the 
-  #      inputted data frame, if you wish to fit more specific models
-  #      then input a subsetted data frame
-  
-  if(require(parallel) == FALSE){stop("Please install parallel package")}
-  
-  if(missing(myClust)) {
-    nCores <- detectCores()
-    myClust <- makeCluster(nCores-1, type = "PSOCK")
-  }
-  
-  # Defaults to first column if no response is given 
-  if(is.na(response)){response<-colnames(inputData)[1]}
-  
-  #reorder data with response variable first
-  #Do this as lm command will take first column as no response with no other
-  #args given
-  inputData <- inputData[,c(which(colnames(inputData)==response),which(colnames(inputData)!=response))]
-  #Create matrix to store results
-  bootResults <- matrix(nrow = nBoot, ncol = (ncol(inputData)))
-  
-  inputLM <- lm(inputData)
-  bootResults[1,] <- coef(inputLM)
-  
-  bootResults[2:nBoot,] <- t(parSapply(myClust, 2:nBoot, function(i) {
-    #resample data with replacement and fit model to this resample
-    resample <- inputData[sample(1:nrow(inputData), nrow(inputData), replace = TRUE),]
-    bootLM <- lm(data = resample)
-    return((coef(bootLM)))}))
-  
-  #Set column names of matrix to the estimated parameters
-  colnames(bootResults) <- names(coef(inputLM))
-  
-  return(bootResults)
-}
-
-# Benchmark code.
+# Benchmark Code for first iteration (internally defined clusters)
 set.seed(1234)
 Benchmark2<- microbenchmark(
-  lmBootExCluster,
+  lmBootInCluster(FitnessTwoVars,1000,"Oxygen"),
   times = 100
 )  
-Benchmark2
 
 
-# Terminating the cluster
+# Benchmark Code for second/final iteration (externally defined clusters).
+nCores <- detectCores()
+myClust <- makeCluster(nCores-1, type = "PSOCK")
+set.seed(1234)
+Benchmark3<- microbenchmark(
+  lmBoot(FitnessTwoVars,1000, response = "Oxygen", myClust = myClust),
+  times = 100
+)  
+
 stopCluster(myClust)
 
 
-
-
-#--------------------------------------- BENCHMARK FOR THE BOOT PACKAGE FUNCTION-------------------------------------------------------------
-
-
-
-
-# This defines the statistic function parameter required for the boot package function.
-BootStatistic <- function(dataframe, indices, responseCol){
-  dataframe <- dataframe[indices,]
-  colnames(dataframe)[responseCol]= "y"
-  BootStatLM <- lm(y ~ . , data = dataframe)
-  coef(BootStatLM)
-}
-
-
-# Benchmark code. 
+# Benchmark code for boot package function. 
 set.seed(1234)
-Benchmark3<- microbenchmark(
-  boot(fitness, BootStatistic, R = 1000, responseCol = 3, parallel = "multicore", ncpus= nCores-1),
+Benchmark4<- microbenchmark(
+  boot(FitnessTwoVars, BootStatistic, R = 1000, responseCol = 2, parallel = "multicore", ncpus= nCores-1),
   times = 100
 )  
-Benchmark3
 
 
-#-------------------------------------- BENCHMARK PLOTS SHOWWING INCREASE IN SPEED ACROSS FUNCTION ITERATIONS--------------------------------
 
 
-BenchmarkPlot <- rbind(Benchmark1, Benchmark2, Benchmark3)
-boxplot(BenchmarkPlot, unit="ms", log = F, ylab = "Time (milliseconds)", xlab = "Function", names = c("lmBootInCluster", "lmBootExCluster", "boot"))
+#-------------------------------------- BENCHMARK PLOTS SHOWWING INCREASE IN SPEED ACROSS FUNCTION ITERATIONS------------------------
 
+
+BenchmarkPlot <- rbind(Benchmark1, Benchmark2, Benchmark3, Benchmark4)
+boxplot(BenchmarkPlot, unit="ms", log = F, ylab = "Time (milliseconds)", xlab = "Function", names = c("Original", "First iteration", "Final iteration", "boot"))

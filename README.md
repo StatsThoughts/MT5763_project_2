@@ -76,4 +76,21 @@ Then we used the data set and call our bootstrap, to run it 1000 times. The resp
 Truth |   83.30   | -1.862 | 0.5756|
 Estimated | 83.64 | -1.911 | 0.5893 |
 
+However, the histogram can give us a more precisely idea of how the data distributed. 
+
+![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/intercept.png)
+![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/Grith_plot.png)
+![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/Volume_plot.png)
+
+From the histogram, we can roughly say for intercept, it is between 80 to 90. The slope for parameter Grith is around -1 to 1 and "volume" is about 0.4 to 0.9. Therefore, we could calculate the confidence interval to help to predict the value. Here we got the result.
+
+![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/CI.JPG)
+
+This is the example analysis for our bootstrap in R.
+
+
+
+
+
+
 

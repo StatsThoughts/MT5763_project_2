@@ -24,7 +24,7 @@ To use the function call lmBoot() with inputs as defined above.
 
 The plot below shows the change in speed from the first iteration to the last as well as the boot function from R package 'boot'. Interestingly there is a large time increase when the for loop is changed to a sapply within the function, however once parallelisation is added as well the function runs much faster.
 
-[!lmBoot timings](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/TimingDistribution%20Boxplots.jpeg)
+![lmBoot_timings](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/TimingDistribution%20Boxplots.jpeg)
 
 
 
@@ -32,7 +32,7 @@ The plot below shows the change in speed from the first iteration to the last as
 
 The plot below details the microbenchmark results comparing the lmBoot.R function to the boot function in the R package 'boot'. The timings were produced from running the functions 50 times producing 1000 bootstrap samples each time. 
 
-[!microbenchmark plot](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/Microbenchmark.png)
+![microbenchmark_plot](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/Microbenchmark.png)
 
 ## Documentation for SAS Script
 The script for the code can be found linked [here](https://github.com/StatsThoughts/MT5763_project_2/blob/master/code/regBoot.sas). 

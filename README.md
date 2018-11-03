@@ -40,4 +40,17 @@ Below is a plot showing the changes in speed for our code after each major code 
 
 ![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/SAS%20Time%20Plots.png)
 
+## Documentation for example analysis in R 
+The purpose of the part is using an examaple data set to run our bootstrap function and using the result to illustrate how it works. 
+In this part, we focus on R code. 
+
+### Example data set 
+We are using the same data set provided by R base called "trees" in both R and SAS example analysis. The data is about the girth, geight and volume for Black Cherry Trees, so there are three columns in the data are "Girth", "Height" and "Volume". 
+  
+### Analyse 
+
+
+
+
+
 

@@ -71,8 +71,9 @@ Firstly, we plot the data and we got the result as shown below.
 
 Then we used the data set and call our bootstrap, to run it 1000 times. The response variable we set is parameter "Height". So we can get the result - the coefficient value from our bootstrap. Firstly, we extracted the number for input data set which is the first line from the output. Then we can calculate the mean value for the rest of the data. Roughly, we can tell there is not a huge difference between the truth and estimated value. 
 
-![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/compare.JPG)
-
-
+ |     | Intercept | Girth | Volume |
+---   |     ---   | ---   | ---    |
+Truth |   83.30   | -1.862 | 0.5756|
+Estimated | 83.64 | -1.911 | 0.5893 |
 
 

@@ -20,10 +20,6 @@ To use the function call lmBoot() with inputs as defined above.
 
 ## Speed increase in Code Changes
 
-# Microbenchmark results
-Below is a plot of the microbenchmark results comparing the performance of 'lmBoot.R' to the 'boot' function within the boot package in R. Each script was run 50 times for a 1000 sample bootstrap.
-![benchmarkplot](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/Microbenchmark.png)
-
 ## Documentation for SAS Script
 The script for the code can be found linked [here](https://github.com/StatsThoughts/MT5763_project_2/blob/master/code/regBoot.sas). 
 
@@ -52,8 +48,6 @@ In this part, we focus on R code.
 
 ### Example data set 
 We are using the data set provided by R base called "trees" in both R and SAS example analysis. The data is about the girth, height and volume for Black Cherry Trees, so there are three columns in the data are "Girth", "Height" and "Volume". 
-                              
-![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/trees.png) 
  
   
 ### Analyse 
@@ -61,6 +55,15 @@ Firstly, we plot the data and we got the result as shown below.
 
 ![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/trees_plot.png)
 
+Then we used the data set and call our bootstrap, to run it 1000 times. The response variable we set is parameter "Height". So we can get the result - the coefficient value from our bootstrap. Firstly, we extracted the number for input data set which is the first line from the output. Then we can calculate the mean value for the rest of the data. Roughly, we can tell there is not a huge difference between the truth and estimated value. 
+
+\documentclass[UTF8]{ctexart}
+\begin{document}
+\begin{tabular}{lr}
+我是& 一只\\
+表格君& 咿呀咿呀哟
+\end{tabular}
+\end{document}
 
 
 

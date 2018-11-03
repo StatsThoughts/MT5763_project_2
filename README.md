@@ -1,4 +1,4 @@
-# MT5763_project_2
+# MT5763 Project 2
 
 Welcome to the repository for the MT5763 Group Project for team Sharknado 5: Global Swarming
 
@@ -19,6 +19,20 @@ The function performs a bootstrap by first sampling from the data with replaceme
 To use the function call lmBoot() with inputs as defined above. 
 
 ## Speed increase in Code Changes
+
+### Speed changes in different versions of lmBoot
+
+The plot below shows the change in speed from the first iteration to the last as well as the boot function from R package 'boot'. Interestingly there is a large time increase when the for loop is changed to a sapply within the function, however once parallelisation is added as well the function runs much faster.
+
+![lmBoot_timings](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/TimingDistribution%20Boxplots.jpeg)
+
+
+
+### Microbenchmarking
+
+The plot below details the microbenchmark results comparing the lmBoot.R function to the boot function in the R package 'boot'. The timings were produced from running the functions 50 times producing 1000 bootstrap samples each time. 
+
+![microbenchmark_plot](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/Microbenchmark.png)
 
 ## Documentation for SAS Script
 The script for the code can be found linked [here](https://github.com/StatsThoughts/MT5763_project_2/blob/master/code/regBoot.sas). 
@@ -57,8 +71,9 @@ Firstly, we plot the data and we got the result as shown below.
 
 Then we used the data set and call our bootstrap, to run it 1000 times. The response variable we set is parameter "Height". So we can get the result - the coefficient value from our bootstrap. Firstly, we extracted the number for input data set which is the first line from the output. Then we can calculate the mean value for the rest of the data. Roughly, we can tell there is not a huge difference between the truth and estimated value. 
 
-![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/compare.JPG)
-
-
+ |     | Intercept | Girth | Volume |
+---   |     ---   | ---   | ---    |
+Truth |   83.30   | -1.862 | 0.5756|
+Estimated | 83.64 | -1.911 | 0.5893 |
 
 

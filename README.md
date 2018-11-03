@@ -20,6 +20,10 @@ To use the function call lmBoot() with inputs as defined above.
 
 ## Speed increase in Code Changes
 
+# Microbenchmark results
+Below is a plot of the microbenchmark results comparing the performance of 'lmBoot.R' to the 'boot' function within the boot package in R. Each script was run 50 times for a 1000 sample bootstrap.
+![benchmarkplot](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/Microbenchmark.png)
+
 ## Documentation for SAS Script
 The script for the code can be found linked [here](https://github.com/StatsThoughts/MT5763_project_2/blob/master/code/regBoot.sas). 
 

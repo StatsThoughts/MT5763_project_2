@@ -90,7 +90,6 @@ Intercept |   62.0259   | 102.5396 |
 Grith | -4.2716 | 0.8232 | 
 Volume | 0.1122 | 1.0518 | 
 
-![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/CI.JPG)
 
 This is the example analysis for our bootstrap in R.
 

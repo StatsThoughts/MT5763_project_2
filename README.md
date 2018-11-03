@@ -47,12 +47,14 @@ The purpose of the part is using an examaple data set to run our bootstrap funct
 In this part, we focus on R code. 
 
 ### Example data set 
-We are using the same data set provided by R base called "trees" in both R and SAS example analysis. The data is about the girth, height and volume for Black Cherry Trees, so there are three columns in the data are "Girth", "Height" and "Volume". 
+We are using the data set provided by R base called "trees" in both R and SAS example analysis. The data is about the girth, height and volume for Black Cherry Trees, so there are three columns in the data are "Girth", "Height" and "Volume". 
 
+\begin{center}
 ![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/trees.png)
+\end{center}  
   
 ### Analyse 
-First we plot the data and we got the result as shown below. 
+Firstly, we plot the data and we got the result as shown below. 
 
 ![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/trees_plot.png)
 

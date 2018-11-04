@@ -6,7 +6,7 @@ Welcome to the repository for the MT5763 Group Project for team Sharknado 5: Glo
 The script for the code can be found liked [here](https://github.com/StatsThoughts/MT5763_project_2/blob/master/code/lmBoot.r).
 
 ### lmBoot
-The purpose of this function is to generate bootstraps for a linear regresion model for any number of covariates. The output of the function is a single matrix which contains covariate estimates for each bootstrapped resample of the data.
+The purpose of this function is to generate bootstraps for a linear regression model for any number of covariates. The output of the function is a single matrix which contains covariate estimates for each bootstrapped resample of the data.
 
 The function takes the following arguments:
 * **inputData** - A dataframe containing observations for each of the covariates and the response
@@ -22,7 +22,7 @@ To use the function call lmBoot() with inputs as defined above.
 
 ### Speed changes in different versions of lmBoot
 
-The plot below shows the change in speed from the first iteration to the last as well as the boot function from R package 'boot'. Interestingly there is a large time increase when the for loop is changed to a sapply within the function and even larger time increase when the clusters are initally defined within the function. However once parallelisation was properly added, with the option to use clusters defined outside of the function, the function runs much faster (if the cluster used is defined outside of the function, otherwise there is no time change).
+The plot below shows the change in speed from the first iteration to the last as well as the boot function from R package 'boot'. Interestingly there is a large time increase when the for loop is changed to a sapply within the function and even larger time increase when the clusters are initially defined within the function. However once parallelisation was properly added, with the option to use clusters defined outside of the function, the function runs much faster (if the cluster used is defined outside of the function, otherwise there is no time change).
 
 ![lmBoot_timings](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/lmBoot_timings.png)
 
@@ -36,13 +36,13 @@ The plot below details the microbenchmark results comparing the lmBoot.R functio
 ## Documentation for SAS Script
 The script for the code can be found linked [here](https://github.com/StatsThoughts/MT5763_project_2/blob/master/code/regBoot.sas). 
 
-The purpose of this script is to generate a number of bootstrap resamples for a linear regression model for a single covariate. In the comments also contains the timing mechnisim to time how fast the SAS script ran. 
+The purpose of this script is to generate a number of bootstrap resamples for a linear regression model for a single covariate. In the comments also contains the timing mechanism to time how fast the SAS script ran. 
 
 In this code, there is only a single function/SAS MACRO defined below. 
 
 ### regBoot
 The purpose of this function is to generate bootstrap resamples for a linear regression model for a single covariate. The function has the following arguments 
-* **NumberOfLoops** - an interger value containing the number of bootstrap resamples to be done in the function. Must be greater than 1.  Note one bootstrap resample will include the original data without resampiling with replacement. 
+* **NumberOfLoops** - an integer value containing the number of bootstrap resamples to be done in the function. Must be greater than 1.  Note one bootstrap resample will include the original data without resampling with replacement. 
 * **DataSet** - a SAS table containing observations for the response and covariate given in XVariable and YVariable 
 * **XVariable** - The covariate of the regression model given as a variable name from DataSet table
 * **YVariable** - The response of the regression model given as a variable name from DataSet table
@@ -51,46 +51,39 @@ To use the file, call the macro %regBoot() with parameters defined following the
 
 ## Speed increases in Code Changes
 
-Below is a plot showing the changes in speed for our code after each major code change for SAS. For the SAS code, the code went through two major iterations. The "Original Version" is the orignal SAS bootstrapping code provided for the project. The  "Optimized Version" is the version after changing and enhancing the orignal SAS bootstrapping code. The "Added RTF Outputs" change added the RTF outputs in the format specified for the project, and added an enhancement to ensure that at least one of the bootstrap resamples included the orginal linear model. 
+Below is a plot showing the changes in speed for our code after each major code change for SAS. For the SAS code, the code went through two major iterations. The "Original Version" is the orignal SAS bootstrapping code provided for the project. The “Optimized Version" is the version after changing and enhancing the orignal SAS bootstrapping code. The "Added RTF Outputs" change added the RTF outputs in the format specified for the project, and added an enhancement to ensure that at least one of the bootstrap resamples included the orginal linear model. 
 
 ![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/SAS%20Time%20Plots.png)
 
-## Documentation for example analysis in R 
-The purpose of the part is using an examaple data set to run our bootstrap function and using the result to illustrate how it works. 
+## Example Analyses 
+The purpose of the part is to use an example data set to run our bootstrap function and illustrate how the bootstrap function works. 
+We are using the data set provided by base R called "trees" in both R and SAS example analysis. The data is about the girth, height and volume for Black Cherry Trees. There are three columns in the data: "Girth", "Height" and "Volume”. The data can be found in the repo [here](https://github.com/StatsThoughts/MT5763_project_2/blob/master/data/trees.csv)
 
-In this part, we focus on R code. The code used for the analysis below is found [here](https://github.com/StatsThoughts/MT5763_project_2/blob/master/code/Example%20analysis.R)
+### R Analysis 
+For our analysis, we modeled the Height based on a linear model with covariates Girth and Volume. The code used for the analysis below is found [here](https://github.com/StatsThoughts/MT5763_project_2/blob/master/code/Example%20analysis.R). 
 
-### Example data set 
-We are using the data set provided by R base called "trees" in both R and SAS example analysis. The data is about the girth, height and volume for Black Cherry Trees, so there are three columns in the data are "Girth", "Height" and "Volume". 
-  
-### Analyse 
-Firstly, we plot the data and we got the result as shown below. 
+Firstly, we plotted the data and obtained the result shown below. 
 
 ![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/trees_plot.png)
 
-Then we used the data set and call our bootstrap, to run it 1000 times. The response variable we set is parameter "Height". So we can get the result - the coefficient value from our bootstrap. Firstly, we extracted the number for input data set which is the first line from the output. Then we can calculate the mean value for the rest of the data. Roughly, we can tell there is not a huge difference between the truth and estimated value. 
-
- |     | Intercept | Girth | Volume |
----   |     ---   | ---   | ---    |
-Truth |   83.30   | -1.862 | 0.5756|
-Estimated | 83.64 | -1.911 | 0.5893 |
-
-However, the histogram can give us a more precisely idea of how the data distributed. 
+Then, using the dataset, we conducted a bootstrap with 1000 resamples on the model defined above. The output from the function was a dataframe containing all the coefficient estimates from each bootstrap resample. The histograms give us a visual representation of the shape of the distribution for the coefficients. 
 
 ![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/intercept.png)
 ![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/Grith_plot.png)
 ![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/Volume_plot.png)
 
-From the histogram, we can roughly claim that for intercept, it should between the value of 80 to 90. The slope for parameter Grith is around -1 to 1 and the slope of volume is about 0.4 to 0.9. Therefore, we could calculate the confidence interval to help us to predict the value. Here is the result by our bootsrtap function.
+From our bootstrap results, we can construct the two-sided 95% confidence interval for the Intercept, Girth and Volume coefficients. This is done by finding the 2.5% and 97.5% percentiles of the bootstrap results for Intercept, Girth and Volume coefficients respectively. These results are illustrated below:
 
  |     | 2.5% | 97.5% |
 ---   |     ---   | ---   | 
 Intercept |   62.0259   | 102.5396 | 
-Grith | -4.2716 | 0.8232 | 
+Girth | -4.2716 | 0.8232 | 
 Volume | 0.1122 | 1.0518 | 
 
+From these results, we can conclude the 95% confidence intervals for the intercept to be [62.0259, 102.5396], Girth to be [-4.2716, 0.8232] and volume to be [0.1122, 1.0518]. Since the confidence interval for Girth contains 0, we can conclude that Girth does not appear to have a significant effect in the model. 
 
-This is the example analysis for our bootstrap in R.
+
+### SAS Analysis 
 
 
 

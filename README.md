@@ -62,7 +62,7 @@ We are using the data set provided by base R called "trees" in both R and SAS ex
 ### R Analysis 
 For our analysis, we modeled the Height based on a linear model with covariates Girth and Volume. The code used for the analysis below is found [here](https://github.com/StatsThoughts/MT5763_project_2/blob/master/code/Example%20analysis.R). 
 
-Firstly, we plotted the data and obtained the result shown below. 
+Firstly, we plotted the data and obtained the result shown below to explore the relationships between variables in the dataset. 
 
 ![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/trees_plot.png)
 
@@ -85,21 +85,22 @@ From these results, we can conclude the 95% confidence intervals for the interce
 
 ### SAS Analysis 
 
-plotted the data overall
+For our analysis, we modeled the Height based on a linear model with the explanatory variable Girth. The code for the analysis can be found [here](https://github.com/StatsThoughts/MT5763_project_2/blob/master/code/Example%20analysis%20for%20SAS.sas)
+
+After reading the data into SAS, we plotted a pairwise scatterplot to see if there were any relationships in the data. We obtained the plot shown below:
+
 ![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/trees_plot%20for%20SAS.png)
 
-The histogram for Girth and Intercept
+From here, we fitted the linear model with Height as the response variable and Girth as the explanatory variable. In the code, when we called the macro regBoot we set XVariable=Girth, and YVariable=Height. Then, we conducted a bootstrap of 1000 iterations (which is set by setting NumberOfLoops=1000). 
+
+We obtained the following histograms of the distribution of coefficient estimates for Girth and the intercept.  
+
 ![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/Histogram%20for%20Girth%20coefficient.png)
 
 ![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/Histogram%20for%20Intercept%20coefficient(with%20Girth).png)
 
-The histogram for Volume and Intercept
-![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/Histogram%20for%20Volume%20coefficient.png)
+We also obtained the following output for the estimated value and 95% bootstrap confidence interval for both the intercept and coefficient for Girth. 
 
-![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/Histogram%20for%20Intercept%20coefficient(with%20Volume).png)
-
-CI for Girth and Intercept
 ![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/95%25%20CI%20for%20Girth%20and%20Intercept.png)
 
-CI for Volume and Intercept
-![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/95%25%20CI%20for%20Volume%20and%20Intercept.png)
+From these outputs, we can conclude that the 95% confidence intervals for the intercept and coefficient for Girth are [50.073 , 71.029] and [0.464, 1.50] with estimates 62.155 and 0.230 respectively. As both these intervals do not contain 0, we can conclude that Girth has a significant effect on the model and the intercept is non-zero. 

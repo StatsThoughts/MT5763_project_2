@@ -1,4 +1,4 @@
-/* plot original data to find out if they have obviously relationship */
+/* plot original data to find out if they have any relationships */
 proc template;
 define statgraph sgdesign;
 dynamic _HEIGHT _GIRTH _VOLUME;
@@ -10,11 +10,10 @@ endgraph;
 end;
 run;
 
-proc sgrender data=TREE.SQ template=sgdesign;
+proc sgrender data=Trees template=sgdesign;
 dynamic _HEIGHT="HEIGHT" _GIRTH="GIRTH" _VOLUME="VOLUME";
 run;
 
 
 /* run our bootstrap */
-%regBoot(NumberOfLoops=1000, DataSet=TREE.Trees, XVariable=Girth, YVariable=Height);
-%regBoot(NumberOfLoops=1000, DataSet=TREE.Trees, XVariable=Volume, YVariable=Height);
+%regBoot(NumberOfLoops=1000, DataSet=Trees, XVariable=Girth, YVariable=Height);

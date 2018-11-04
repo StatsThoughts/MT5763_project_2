@@ -82,7 +82,7 @@ However, the histogram can give us a more precisely idea of how the data distrib
 ![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/Grith_plot.png)
 ![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/Volume_plot.png)
 
-From the histogram, we can roughly say for intercept, it is between 80 to 90. The slope for parameter Grith is around -1 to 1 and "volume" is about 0.4 to 0.9. Therefore, we could calculate the confidence interval to help to predict the value. Here we got the result.
+From the histogram, we can roughly claim yhat for intercept, it should between the value of 80 to 90. The slope for parameter Grith is around -1 to 1 and the slope of volume is about 0.4 to 0.9. Therefore, we could calculate the confidence interval to help us to predict the value. Here is the result by our bootsrtap function.
 
  |     | 2.5% | 97.5% |
 ---   |     ---   | ---   | 

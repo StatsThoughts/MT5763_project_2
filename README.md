@@ -22,10 +22,9 @@ To use the function call lmBoot() with inputs as defined above.
 
 ### Speed changes in different versions of lmBoot
 
-The plot below shows the change in speed from the first iteration to the last as well as the boot function from R package 'boot'. Interestingly there is a large time increase when the for loop is changed to a sapply within the function and even more time increase when the clusters are defined within the function, however once parallelisation is added as well the function runs much faster.
+The plot below shows the change in speed from the first iteration to the last as well as the boot function from R package 'boot'. Interestingly there is a large time increase when the for loop is changed to a sapply within the function and even larger time increase when the clusters are initally defined within the function. However once parallelisation was properly added, with the option to use clusters defined outside of the function, the function runs much faster (if the cluster used is defined outside of the function, otherwise there is no time change).
 
 ![lmBoot_timings](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/lmBoot_timings.png)
-
 
 
 ### Microbenchmarking

@@ -54,15 +54,15 @@
 	
 	/*Mean Estimates of intercept and slope*/
 	DATA CI95Per; 
-	MERGE CI95Per OGregEsts (keep = Intercept Age);
-	RENAME Intercept = InterceptEstimate Age = AgeEstimate; 
+	MERGE CI95Per OGregEsts (keep = Intercept &XVariable);
+	RENAME Intercept = InterceptEstimate &XVariable = &XVariable.Estimate; 
 	RUN;
 
 	ODS RTF;
 
 	/*Prints the Mean Estimates and CIs*/
 	PROC PRINT DATA  = CI95Per;
-	VAR AgeLower95 AgeUpper95  AgeEstimate;
+	VAR &XVariable.Lower95 &XVariable.Upper95  &XVariable.Estimate;
 	TITLE "95% CI for &XVariable coefficent";
 	RUN;
 
@@ -98,6 +98,7 @@
 options nonotes;
 /*Run the macro*/
 %regBoot(NumberOfLoops=100, DataSet=MT5763.Fittness, XVariable=Age, YVariable=Oxygen);
+
 
 
 /* Stop timer */

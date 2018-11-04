@@ -99,7 +99,7 @@ The histogram for Volume and Intercept
 ![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/Histogram%20for%20Intercept%20coefficient(with%20Volume).png)
 
 CI for Girth and Intercept
-![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/Histogram%20for%20Girth%20coefficient.png)
+![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/95%25%20CI%20for%20Girth%20and%20Intercept.png)
 
 CI for Volume and Intercept
 ![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/95%25%20CI%20for%20Volume%20and%20Intercept.png)

@@ -3,7 +3,7 @@
 Welcome to the repository for the MT5763 Group Project for team Sharknado 5: Global Swarming
 
 ## Documentation for R Script
-The script for the code can be found liked [here](https://github.com/StatsThoughts/MT5763_project_2/blob/master/code/lmBoot.R).
+The script for the code can be found liked [here](https://github.com/StatsThoughts/MT5763_project_2/blob/master/code/lmBoot.r).
 
 ### lmBoot
 The purpose of this function is to generate bootstraps for a linear regresion model for any number of covariates. The output of the function is a single matrix which contains covariate estimates for each bootstrapped resample of the data.

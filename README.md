@@ -58,30 +58,24 @@ Below is a plot showing the changes in speed for our code after each major code 
 ## Documentation for example analysis in R 
 The purpose of the part is using an examaple data set to run our bootstrap function and using the result to illustrate how it works. 
 
-In this part, we focus on R code. The code used for the analysis below is found [here](https://github.com/StatsThoughts/MT5763_project_2/blob/master/code/Example%20analysis.R)
+The code used for the analysis below is found [here](https://github.com/StatsThoughts/MT5763_project_2/blob/master/code/Example%20analysis.R). 
 
 ### Example data set 
-We are using the data set provided by R base called "trees" in both R and SAS example analysis. The data is about the girth, height and volume for Black Cherry Trees, so there are three columns in the data are "Girth", "Height" and "Volume". 
+We are using the data set provided by base R called "trees" in both R and SAS example analysis. The data is about the girth, height and volume for Black Cherry Trees. There are three columns in the data: "Girth", "Height" and "Volume". For our analysis, we modeled the Height based on a linear model with covariates Girth and Volumne. The data can be found in the repo [here](https://github.com/StatsThoughts/MT5763_project_2/blob/master/data/trees.csv)
   
-### Analyse 
-Firstly, we plot the data and we got the result as shown below. 
+### Analysis 
+Firstly, we plotted the data and obtained the result shown below. 
 
 ![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/trees_plot.png)
 
-Then we used the data set and call our bootstrap, to run it 1000 times. The response variable we set is parameter "Height". So we can get the result - the coefficient value from our bootstrap. Firstly, we extracted the number for input data set which is the first line from the output. Then we can calculate the mean value for the rest of the data. Roughly, we can tell there is not a huge difference between the truth and estimated value. 
 
- |     | Intercept | Girth | Volume |
----   |     ---   | ---   | ---    |
-Truth |   83.30   | -1.862 | 0.5756|
-Estimated | 83.64 | -1.911 | 0.5893 |
-
-However, the histogram can give us a more precisely idea of how the data distributed. 
+Then, using the dataset, we conducted a bootstrap with 1000 resamples on the model defined above. The output from the function was a dataframe containing all the coefficient estimates from each bootstrap resample. The histograms give us a visual representation of the shape of the distribution for the coefficents. 
 
 ![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/intercept.png)
 ![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/Grith_plot.png)
 ![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/Volume_plot.png)
 
-From the histogram, we can roughly claim that for intercept, it should between the value of 80 to 90. The slope for parameter Grith is around -1 to 1 and the slope of volume is about 0.4 to 0.9. Therefore, we could calculate the confidence interval to help us to predict the value. Here is the result by our bootsrtap function.
+From our bootstrap results, we can construct the two sided 95% confidence interval for the Intercept, Girth and Volume coefficents. This is done by finding the 2.5% and 97.5% precentiles of the bootstrap results for Intercept, Girth and Volume coefficents respectively. These results are illustrated below:
 
  |     | 2.5% | 97.5% |
 ---   |     ---   | ---   | 
@@ -89,8 +83,8 @@ Intercept |   62.0259   | 102.5396 |
 Grith | -4.2716 | 0.8232 | 
 Volume | 0.1122 | 1.0518 | 
 
+From these results, we can conclude the 95% confidence intervals for the intercept to be [62.0259, 102.5396], Girth to be [-4.2716, 0.8232] and volumne to be [0.1122, 1.0518]. Since the confidence interval for Girth contains 0, we can conclude that Girth does not appear to have a signifigant effect in the model. 
 
-This is the example analysis for our bootstrap in R.
 
 
 

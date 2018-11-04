@@ -55,19 +55,16 @@ Below is a plot showing the changes in speed for our code after each major code 
 
 ![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/SAS%20Time%20Plots.png)
 
-## Documentation for example analysis in R 
-The purpose of the part is using an examaple data set to run our bootstrap function and using the result to illustrate how it works. 
+## Example Analysies 
+The purpose of the part is to use an example data set to run our bootstrap function and illustrate how the bootstrap function works. 
+We are using the data set provided by base R called "trees" in both R and SAS example analysis. The data is about the girth, height and volume for Black Cherry Trees. There are three columns in the data: "Girth", "Height" and "Volume".The data can be found in the repo [here](https://github.com/StatsThoughts/MT5763_project_2/blob/master/data/trees.csv)
 
-The code used for the analysis below is found [here](https://github.com/StatsThoughts/MT5763_project_2/blob/master/code/Example%20analysis.R). 
+### R Analysis 
+For our analysis, we modeled the Height based on a linear model with covariates Girth and Volumne. The code used for the analysis below is found [here](https://github.com/StatsThoughts/MT5763_project_2/blob/master/code/Example%20analysis.R). 
 
-### Example data set 
-We are using the data set provided by base R called "trees" in both R and SAS example analysis. The data is about the girth, height and volume for Black Cherry Trees. There are three columns in the data: "Girth", "Height" and "Volume". For our analysis, we modeled the Height based on a linear model with covariates Girth and Volumne. The data can be found in the repo [here](https://github.com/StatsThoughts/MT5763_project_2/blob/master/data/trees.csv)
-  
-### Analysis 
 Firstly, we plotted the data and obtained the result shown below. 
 
 ![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/trees_plot.png)
-
 
 Then, using the dataset, we conducted a bootstrap with 1000 resamples on the model defined above. The output from the function was a dataframe containing all the coefficient estimates from each bootstrap resample. The histograms give us a visual representation of the shape of the distribution for the coefficents. 
 
@@ -85,6 +82,8 @@ Volume | 0.1122 | 1.0518 |
 
 From these results, we can conclude the 95% confidence intervals for the intercept to be [62.0259, 102.5396], Girth to be [-4.2716, 0.8232] and volumne to be [0.1122, 1.0518]. Since the confidence interval for Girth contains 0, we can conclude that Girth does not appear to have a signifigant effect in the model. 
 
+
+### SAS Analysis 
 
 
 

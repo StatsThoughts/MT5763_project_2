@@ -16,3 +16,5 @@ run;
 
 
 /* run our bootstrap */
+%regBoot(NumberOfLoops=1000, DataSet=TREE.Trees, XVariable=Girth, YVariable=Height);
+%regBoot(NumberOfLoops=1000, DataSet=TREE.Trees, XVariable=Volume, YVariable=Height);

@@ -10,8 +10,6 @@ ggplot(data = times, aes(x=State, y = Time, fill = State)) + geom_bar(stat="iden
 
 
 
-
-
 #--------------------------------------- BOXPLOT CODE BELOW-------------------------------------------------------------------------
 
 

@@ -22,9 +22,9 @@ To use the function call lmBoot() with inputs as defined above.
 
 ### Speed changes in different versions of lmBoot
 
-The plot below shows the change in speed from the first iteration to the last as well as the boot function from R package 'boot'. Interestingly there is a large time increase when the for loop is changed to a sapply within the function, however once parallelisation is added as well the function runs much faster.
+The plot below shows the change in speed from the first iteration to the last as well as the boot function from R package 'boot'. Interestingly there is a large time increase when the for loop is changed to a sapply within the function and even more time increase when the clusters are defined within the function, however once parallelisation is added as well the function runs much faster.
 
-![lmBoot_timings](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/TimingDistribution%20Boxplots.jpeg)
+![lmBoot_timings](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/lmBoot_timings.png)
 
 
 
@@ -58,11 +58,11 @@ Below is a plot showing the changes in speed for our code after each major code 
 
 ## Documentation for example analysis in R 
 The purpose of the part is using an examaple data set to run our bootstrap function and using the result to illustrate how it works. 
+
 In this part, we focus on R code. 
 
 ### Example data set 
 We are using the data set provided by R base called "trees" in both R and SAS example analysis. The data is about the girth, height and volume for Black Cherry Trees, so there are three columns in the data are "Girth", "Height" and "Volume". 
- 
   
 ### Analyse 
 Firstly, we plot the data and we got the result as shown below. 
@@ -75,5 +75,27 @@ Then we used the data set and call our bootstrap, to run it 1000 times. The resp
 ---   |     ---   | ---   | ---    |
 Truth |   83.30   | -1.862 | 0.5756|
 Estimated | 83.64 | -1.911 | 0.5893 |
+
+However, the histogram can give us a more precisely idea of how the data distributed. 
+
+![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/intercept.png)
+![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/Grith_plot.png)
+![fig 1](https://github.com/StatsThoughts/MT5763_project_2/blob/master/Plots/Volume_plot.png)
+
+From the histogram, we can roughly say for intercept, it is between 80 to 90. The slope for parameter Grith is around -1 to 1 and "volume" is about 0.4 to 0.9. Therefore, we could calculate the confidence interval to help to predict the value. Here we got the result.
+
+ |     | 2.5% | 97.5% |
+---   |     ---   | ---   | 
+Intercept |   62.0259   | 102.5396 | 
+Grith | -4.2716 | 0.8232 | 
+Volume | 0.1122 | 1.0518 | 
+
+
+This is the example analysis for our bootstrap in R.
+
+
+
+
+
 
 
